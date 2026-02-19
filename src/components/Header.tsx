@@ -74,49 +74,51 @@ export function Header() {
   }, [searching]);
 
   return (
-    <div className="w-full h-20 fixed flex items-center justify-between px-10 z-10">
-      <div className="relative flex flex-col gap-5">
-        <div
-          className="w-[360px] h-[18px] flex gap-1 overflow-hidden shrink-0"
-          ref={searchContainerRef}
-        >
-          <p>search</p>
+    <div className="flex justify-center">
+      <div className="w-[1840px] max-w-[calc(100%_-_80px)] h-20 fixed flex items-center justify-between z-10">
+        <div className="relative flex flex-col gap-5">
           <div
-            className={`min-w-0 h-full flex flex-col ${
-              searching ? 'hidden' : 'inline-block'
-            }`}
-            ref={scope}
+            className="w-[360px] h-[18px] flex gap-1 overflow-hidden shrink-0"
+            ref={searchContainerRef}
           >
-            {[
-              'Mountain Dew Citrus Flavored Soft Drink',
-              'Red Bull Yellow Edition Energy Drink (Tropical Flavor)',
-            ].map((text, i) => (
-              <motion.p
-                key={i}
-                className="min-w-0 h-full text-ellipsis overflow-hidden whitespace-nowrap shrink-0"
-              >
-                {text}
-              </motion.p>
-            ))}
+            <p>search</p>
+            <div
+              className={`min-w-0 h-full flex flex-col ${
+                searching ? 'hidden' : 'inline-block'
+              }`}
+              ref={scope}
+            >
+              {[
+                'Mountain Dew Citrus Flavored Soft Drink',
+                'Red Bull Yellow Edition Energy Drink (Tropical Flavor)',
+              ].map((text, i) => (
+                <motion.p
+                  key={i}
+                  className="min-w-0 h-full text-ellipsis overflow-hidden whitespace-nowrap shrink-0"
+                >
+                  {text}
+                </motion.p>
+              ))}
+            </div>
+            <input
+              className={`flex-1 ${
+                searching ? 'inline-block' : 'hidden'
+              } bg-transparent`}
+              ref={searchInputRef}
+              type="text"
+            />
           </div>
-          <input
-            className={`flex-1 ${
-              searching ? 'inline-block' : 'hidden'
-            } bg-transparent`}
-            ref={searchInputRef}
-            type="text"
-          />
+          {searching ? (
+            <div className="w-[360px] top-full mt-5 p-5 absolute bg-white border border-black"></div>
+          ) : undefined}
         </div>
-        {searching ? (
-          <div className="w-[360px] absolute top-full mt-5 p-5 bg-white border border-black "></div>
-        ) : undefined}
+        <p
+          className="cursor-pointer hover:underline"
+          onClick={() => navigate('/')}
+        >
+          tasteshelf.com
+        </p>
       </div>
-      <p
-        className="cursor-pointer hover:underline"
-        onClick={() => navigate('/')}
-      >
-        tasteshelf.com
-      </p>
     </div>
   );
 }

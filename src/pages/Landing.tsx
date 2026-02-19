@@ -13,17 +13,28 @@ export function Landing() {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="h-screen px-10 flex gap-20 items-center no-scrollbar overflow-x-auto">
-        {featuredList.map((_, index) => (
-          <img
-            key={index}
-            src="https://tr.rbxcdn.com/180DAY-18f5ddc9fab18e2ab000abfd89d3e00a/420/420/ShoulderAccessory/Webp/noFilter"
-            className="w-[25%] shrink-0 aspect-square"
-            alt="Beverage Product"
-          />
-        ))}
+      <style>
+        {`
+          @media (min-width: 1840px) {
+            .fade-mask-large-screen {
+              mask-image: linear-gradient(to right, transparent, black 400px, black calc(100% - 400px), transparent);
+              -webkit-mask-image: linear-gradient(to right, transparent, black 400px, black calc(100% - 400px), transparent);
+            }
+          }
+        `}
+      </style>
+      <div className="flex justify-center">
+        <div className="w-[1840px] max-w-full h-[280px] my-60 px-10 flex gap-20 items-center no-scrollbar overflow-x-auto fade-mask-large-screen">
+          {featuredList.map((_, index) => (
+            <img
+              key={index}
+              src="https://tr.rbxcdn.com/180DAY-18f5ddc9fab18e2ab000abfd89d3e00a/420/420/ShoulderAccessory/Webp/noFilter"
+              className="w-60 shrink-0 aspect-square"
+              alt="Beverage Product"
+            />
+          ))}
+        </div>
       </div>
-
       <div className="w-full flex flex-col gap-40">
         <div className="flex flex-col">
           <div className="flex justify-center">
@@ -38,7 +49,6 @@ export function Landing() {
             ))}
           </div>
         </div>
-
         <div className="flex flex-col">
           <div className="flex justify-center">
             <div className="w-[1560px] max-w-[calc(100%_-_160px)] h-20 flex items-center justify-between">
