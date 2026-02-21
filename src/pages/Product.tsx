@@ -244,7 +244,7 @@ export function Product() {
         </div>
         <div className="flex justify-center">
           <div className="w-[1560px] max-w-[calc(100%_-_160px)] flex gap-10 items-start">
-            <div className="w-[360px] sticky top-[80px] flex flex-col gap-5 self-start">
+            <div className="w-[360px] sticky top-20 flex flex-col gap-5 self-start">
               <div className="py-[19px] bg-white border border-black no-scrollbar overflow-x-auto">
                 <div className="w-max h-10 px-5 flex items-center gap-5">
                   {featureList.map((_, index) => (
