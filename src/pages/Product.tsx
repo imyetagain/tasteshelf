@@ -14,6 +14,7 @@ export function Product() {
   const [featuredList, setFeaturedList] = useState<Array<any>>([]);
   const [retailList, setRetailList] = useState<Array<any>>([]);
   const [featureList, setFeatureList] = useState<Array<any>>([]);
+  const [tagList, setTagList] = useState<Array<string>>([]);
   const [reviewList, setReviewList] = useState<Review[]>([]);
 
   let regionNameList = new Intl.DisplayNames(['en'], { type: 'region' });
@@ -22,6 +23,13 @@ export function Product() {
     setFeaturedList([0, 0, 0, 0]);
     setRetailList([0, 0, 0, 0]);
     setFeatureList([0, 0, 0, 0, 0, 0, 0, 0]);
+    setTagList([
+      'low-price',
+      'sweet',
+      'tangy',
+      'highly-caffeinated',
+      'high-calorie',
+    ]);
     setReviewList([
       {
         countryCode: 'ad',
@@ -247,9 +255,9 @@ export function Product() {
             <div className="w-[360px] sticky top-20 flex flex-col gap-5 self-start">
               <div className="py-[19px] bg-white border border-black no-scrollbar overflow-x-auto">
                 <div className="w-max h-10 px-5 flex items-center gap-5">
-                  {featureList.map((_, index) => (
+                  {tagList.map((tag, index) => (
                     <p className="shrink-0" key={index}>
-                      쌰갈!!!
+                      {tag}
                     </p>
                   ))}
                 </div>
@@ -293,15 +301,7 @@ export function Product() {
                   </p>
                 </div>
               </div>
-              <div
-                className={`w-full grid gap-x-10 ${
-                  columns === 3
-                    ? 'grid-cols-3'
-                    : columns === 2
-                      ? 'grid-cols-2'
-                      : 'grid-cols-1'
-                }`}
-              >
+              <div className={`w-full grid gap-x-10 grid-cols-${columns}`}>
                 {Array.from({ length: columns }).map((_, colIndex) => (
                   <div className="flex-1 flex flex-col" key={colIndex}>
                     {reviewList
