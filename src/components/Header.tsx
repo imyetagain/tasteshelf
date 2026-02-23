@@ -82,63 +82,78 @@ export function Header() {
   }, [searching]);
 
   return (
-    <div className="flex justify-center">
-      <div className="w-[1840px] max-w-[calc(100%_-_80px)] h-20 fixed flex items-center justify-between z-10">
-        <div className="relative flex flex-col gap-5">
+    <>
+      <AnimatePresence>
+        {searching && (
+          <motion.div
+            className="fixed inset-0 backdrop-blur-md bg-white/0 z-[5]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          />
+        )}
+      </AnimatePresence>
+      <div className="flex justify-center">
+        <div className="w-[1840px] max-w-[calc(100%_-_80px)] h-20 fixed flex items-center justify-between z-10">
           <div
-            className="w-80 h-[18px] flex gap-1 overflow-hidden shrink-0"
+            className="relative flex flex-col gap-5"
             ref={searchContainerRef}
           >
-            <p>search</p>
+            <div className="w-[360px] h-[18px] flex gap-1 overflow-hidden shrink-0">
+              <p>search</p>
+              <AnimatePresence>
+                <div className="h-full w-full relative overflow-hidden">
+                  {!searching && (
+                    <div className="min-w-0 h-full flex flex-col" ref={scope}>
+                      {
+                        // temp
+                        [
+                          'Mountain Dew Citrus Flavored Soft Drink',
+                          'Red Bull Yellow Edition Energy Drink (Tropical Flavor)',
+                        ].map((text, i) => (
+                          <motion.p
+                            key={i}
+                            className="w-full h-full text-ellipsis overflow-hidden whitespace-nowrap shrink-0"
+                          >
+                            {text}
+                          </motion.p>
+                        ))
+                      }
+                    </div>
+                  )}
+                  <input
+                    className={`w-full h-full absolute flex-1 bg-transparent ${
+                      searching
+                        ? 'opacity-100'
+                        : 'opacity-0 pointer-events-none'
+                    }`}
+                    ref={searchInputRef}
+                    type="text"
+                  />
+                </div>
+              </AnimatePresence>
+            </div>
             <AnimatePresence>
-              <div className="h-full w-full relative overflow-hidden">
-                {!searching && (
-                  <div className="min-w-0 h-full flex flex-col" ref={scope}>
-                    {
-                      // temp
-                      [
-                        'Mountain Dew Citrus Flavored Soft Drink',
-                        'Red Bull Yellow Edition Energy Drink (Tropical Flavor)',
-                      ].map((text, i) => (
-                        <motion.p
-                          key={i}
-                          className="w-full h-full text-ellipsis overflow-hidden whitespace-nowrap shrink-0"
-                        >
-                          {text}
-                        </motion.p>
-                      ))
-                    }
-                  </div>
-                )}
-                <input
-                  className={`w-full h-full absolute flex-1 bg-transparent ${
-                    searching ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                  }`}
-                  ref={searchInputRef}
-                  type="text"
-                />
-              </div>
+              {searching && (
+                <motion.div
+                  className="w-[360px] top-full mt-5 p-5 absolute bg-white border border-black"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                ></motion.div>
+              )}
             </AnimatePresence>
           </div>
-          <AnimatePresence>
-            {searching && (
-              <motion.div
-                className="w-[360px] top-full mt-5 p-5 absolute bg-white border border-black"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.25 }}
-              ></motion.div>
-            )}
-          </AnimatePresence>
+          <p
+            className="cursor-pointer hover:underline"
+            onClick={() => navigate('/')}
+          >
+            tasteshelf.com
+          </p>
         </div>
-        <p
-          className="cursor-pointer hover:underline"
-          onClick={() => navigate('/')}
-        >
-          tasteshelf.com
-        </p>
       </div>
-    </div>
+    </>
   );
 }
