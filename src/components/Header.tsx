@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export function Header() {
   const [searching, setSearching] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>('');
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -74,9 +75,10 @@ export function Header() {
 
   useEffect(() => {
     if (searching) {
+      setSearchValue('');
+
       if (!searchInputRef.current) return;
 
-      searchInputRef.current.value = '';
       searchInputRef.current.focus();
     }
   }, [searching]);
@@ -86,7 +88,7 @@ export function Header() {
       <AnimatePresence>
         {searching && (
           <motion.div
-            className="fixed inset-0 backdrop-blur-md bg-white/0 z-[5]"
+            className="fixed inset-0 backdrop-blur-md bg-white/0 z-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -95,12 +97,12 @@ export function Header() {
         )}
       </AnimatePresence>
       <div className="flex justify-center">
-        <div className="w-[1840px] max-w-[calc(100%_-_80px)] h-20 fixed flex items-center justify-between z-10">
+        <div className="w-[1840px] max-w-[calc(100%_-_80px)] h-20 fixed flex items-center justify-between z-20">
           <div
             className="relative flex flex-col gap-5"
             ref={searchContainerRef}
           >
-            <div className="w-[360px] h-[18px] flex gap-1 overflow-hidden shrink-0">
+            <div className="w-[360px] h-[18px] flex gap-1.5 overflow-hidden shrink-0">
               <p>search</p>
               <AnimatePresence>
                 <div className="h-full w-full relative overflow-hidden">
@@ -130,6 +132,8 @@ export function Header() {
                     }`}
                     ref={searchInputRef}
                     type="text"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
                   />
                 </div>
               </AnimatePresence>
@@ -137,12 +141,49 @@ export function Header() {
             <AnimatePresence>
               {searching && (
                 <motion.div
-                  className="w-[360px] top-full mt-5 p-5 absolute bg-white border border-black"
+                  className="top-full mt-5 absolute flex flex-col gap-5"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                ></motion.div>
+                >
+                  <div className="w-[360px] px-2.5 py-5 flex gap-2.5 bg-white border border-black no-scrollbar overflow-x-auto">
+                    {Array.from({ length: 8 }).map((_, index) => {
+                      return (
+                        <img
+                          key={index}
+                          src="https://image.goat.com/transform/v1/attachments/product_template_pictures/images/115/095/782/original/KJ2932.png.png?width=200"
+                          className="w-[60px] shrink-0 aspect-square cursor-pointer"
+                          alt="Beverage Product"
+                        />
+                      );
+                    })}
+                  </div>
+                  <div className="w-[360px] p-5 bg-white border border-black group">
+                    <div className="flex flex-wrap gap-x-5">
+                      {[
+                        ...(searchValue ? [`all ${searchValue}`] : []),
+                        'PRIME Hydration Blue Raspberry',
+                        'Red Bull Yellow Edition Energy Drink (Tropical Flavor)',
+                        'Mountain Dew Citrus Flavoured Soft Drink',
+                        'Starbucks Frappuccino Caramel',
+                        'Red Bull Energy Drink',
+                        'Crush Orange',
+                        'Dr Pepper Cherry',
+                        'Canada Dry Ginger Ale',
+                      ].map((text, index) => (
+                        <p
+                          key={index}
+                          className={`py-[11px] text-[14px] leading-[18px] flex items-center lowercase cursor-pointer hover:underline ${
+                            searchValue && index === 0 ? 'break-all' : ''
+                          }`}
+                        >
+                          {text}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
               )}
             </AnimatePresence>
           </div>

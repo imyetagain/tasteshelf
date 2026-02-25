@@ -207,7 +207,7 @@ export function Product() {
                   ))}
                 </div>
               </div>
-              <div className="w-[360px] px-5 py-[19px] flex flex-col bg-white border border-black no-scrollbar overflow-y-auto">
+              <div className="w-[360px] p-5 flex flex-col bg-white border border-black no-scrollbar overflow-y-auto">
                 <div className="w-full h-full flex flex-col">
                   <div className="w-full h-10 flex items-center justify-between">
                     <p>release year</p>
@@ -230,7 +230,7 @@ export function Product() {
         </div>
         <div className="h-full flex items-center justify-center">
           <img
-            src="https://tr.rbxcdn.com/180DAY-18f5ddc9fab18e2ab000abfd89d3e00a/420/420/ShoulderAccessory/Webp/noFilter"
+            src="https://shop.rosemont.ca/cdn/shop/products/mtndew_800x_f038c4c5-9adc-421f-a1b5-ea3f8c29980a.png?v=1627145543"
             className="h-[calc(100%_-_160px)] max-h-[720px] shrink-0 aspect-square"
             alt="Beverage Product"
           />
@@ -253,7 +253,7 @@ export function Product() {
         <div className="flex justify-center">
           <div className="w-[1560px] max-w-[calc(100%_-_160px)] flex gap-10 items-start">
             <div className="w-[360px] sticky top-20 flex flex-col gap-5 self-start">
-              <div className="py-[19px] bg-white border border-black no-scrollbar overflow-x-auto">
+              <div className="py-5 bg-white border border-black no-scrollbar overflow-x-auto">
                 <div className="w-max h-10 px-5 flex items-center gap-5">
                   {tagList.map((tag, index) => (
                     <p className="shrink-0" key={index}>
@@ -301,11 +301,21 @@ export function Product() {
                   </p>
                 </div>
               </div>
-              <div className={`w-full grid gap-x-10 grid-cols-${columns}`}>
+              <div
+                className={`w-full grid gap-x-10 ${
+                  columns === 3
+                    ? 'grid-cols-3'
+                    : columns === 2
+                      ? 'grid-cols-2'
+                      : 'grid-cols-1'
+                }`}
+              >
                 {Array.from({ length: columns }).map((_, colIndex) => (
                   <div className="flex-1 flex flex-col" key={colIndex}>
                     {reviewList
-                      .filter((_, i) => i % columns === colIndex)
+                      .filter(
+                        (_, listIndex) => listIndex % columns === colIndex,
+                      )
                       .map((review, index) => (
                         <ReviewCard
                           key={index}

@@ -28,7 +28,7 @@ export function Landing() {
           {featuredList.map((_, index) => (
             <img
               key={index}
-              src="https://tr.rbxcdn.com/180DAY-18f5ddc9fab18e2ab000abfd89d3e00a/420/420/ShoulderAccessory/Webp/noFilter"
+              src="https://shop.rosemont.ca/cdn/shop/products/mtndew_800x_f038c4c5-9adc-421f-a1b5-ea3f8c29980a.png?v=1627145543"
               className="w-60 shrink-0 aspect-square"
               alt="Beverage Product"
             />
