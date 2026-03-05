@@ -1,28 +1,24 @@
 import { useEffect, useState, useMemo, useRef } from 'react';
+
 import { ProductCard } from '../components/cards/ProductCard';
 import { ReviewCard } from '../components/cards/ReviewCard';
-
-export interface Review {
-  countryCode: string;
-  date: Date;
-  review: string;
-  score: number;
-}
+import { useDialog } from '../hooks/useDialogStore';
+import { Action } from '../types/dialogType';
+import { Review } from '../types/reviewType';
+import { getCountryIcon, getCountryName } from '../utils/country';
 
 export function Product() {
+  const { setAction } = useDialog();
+
   // temp
   const [featuredList, setFeaturedList] = useState<Array<any>>([]);
   const [retailList, setRetailList] = useState<Array<any>>([]);
-  const [featureList, setFeatureList] = useState<Array<any>>([]);
   const [tagList, setTagList] = useState<Array<string>>([]);
   const [reviewList, setReviewList] = useState<Review[]>([]);
-
-  let regionNameList = new Intl.DisplayNames(['en'], { type: 'region' });
 
   useEffect(() => {
     setFeaturedList([0, 0, 0, 0]);
     setRetailList([0, 0, 0, 0]);
-    setFeatureList([0, 0, 0, 0, 0, 0, 0, 0]);
     setTagList([
       'low-price',
       'sweet',
@@ -115,7 +111,7 @@ export function Product() {
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const width = entry.contentRect.width;
-        // Calculate columns: (width + gap) / (minWidth + gap)
+        // calculate columns: (width + gap) / (minWidth + gap)
         // gap = 40px (gap-10)
         // minWidth = 280px
         const calculatedColumns = Math.floor((width + 40) / (280 + 40));
@@ -175,15 +171,16 @@ export function Product() {
                 interface.
               </p>
             </div>
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col items-end gap-5">
               <div className="w-[360px] max-h-[280px] px-5 flex flex-col bg-white border border-black no-scrollbar overflow-y-auto">
-                <div className="sticky top-0 py-5">
+                <div className="sticky top-0 py-5 flex flex-col gap-1">
                   <p>get it now</p>
+                  <small>from your local retailer</small>
                 </div>
-                <div className="w-full pb-5 flex flex-col">
+                <div className="w-full pb-5 flex flex-col gap-2.5">
                   {retailList.map((_, index) => (
                     <div
-                      className="w-full py-5 flex items-center justify-between gap-5 shrink-0 group cursor-pointer"
+                      className="w-full h-[60px] flex items-center justify-between gap-5 shrink-0 group cursor-pointer"
                       key={index}
                     >
                       <div className="min-w-0 flex flex-col gap-2 flex-1">
@@ -208,21 +205,19 @@ export function Product() {
                 </div>
               </div>
               <div className="w-[360px] p-5 flex flex-col bg-white border border-black no-scrollbar overflow-y-auto">
-                <div className="w-full h-full flex flex-col">
-                  <div className="w-full h-10 flex items-center justify-between">
-                    <p>release year</p>
-                    <p>2000</p>
-                  </div>
-                  <div className="w-full h-10 flex items-center justify-between">
-                    <p>calories</p>
-                    <p>14.5cal/oz</p>
-                  </div>
-                  <div className="w-full h-10 flex items-center justify-between">
-                    <p>
-                      user score<span className="footnote">1</span>
-                    </p>
-                    <p>93</p>
-                  </div>
+                <div className="w-full h-10 flex items-center justify-between">
+                  <p>release year</p>
+                  <p>2000</p>
+                </div>
+                <div className="w-full h-10 flex items-center justify-between">
+                  <p>calories</p>
+                  <p>14.5cal/oz</p>
+                </div>
+                <div className="w-full h-10 flex items-center justify-between">
+                  <p>
+                    user score<span className="footnote">1</span>
+                  </p>
+                  <p>93</p>
                 </div>
               </div>
             </div>
@@ -246,7 +241,12 @@ export function Product() {
           </div>
           <div className="px-[max(80px_,_calc((100%_-_1560px)_/_2))] grid grid-rows-1 grid-flow-col gap-x-10 no-scrollbar overflow-x-auto">
             {featuredList.map((_, index) => (
-              <ProductCard key={index} firstRow />
+              <ProductCard
+                key={index}
+                company="Company"
+                product="Product"
+                isFirstRow
+              />
             ))}
           </div>
         </div>
@@ -263,8 +263,9 @@ export function Product() {
                 </div>
               </div>
               <div className="w-[360px] max-h-[280px] px-5 flex flex-col bg-white border border-black no-scrollbar overflow-y-auto">
-                <div className="sticky top-0 py-5">
-                  <p>by country</p>
+                <div className="sticky top-0 py-5 flex flex-col gap-1">
+                  <p>user score</p>
+                  <small>ranked by country</small>
                 </div>
                 <div className="w-full pb-5 flex flex-col">
                   {countryStats.map((stat, index) => (
@@ -274,12 +275,12 @@ export function Product() {
                     >
                       <div className="flex items-center gap-2 overflow-hidden">
                         <img
-                          src={`https://hatscripts.github.io/circle-flags/flags/${stat.code}.svg`}
+                          src={getCountryIcon(stat.code)}
                           className="w-[18px] h-[18px] shrink-0"
-                          alt={stat.code}
+                          alt={getCountryName(stat.code)}
                         />
                         <p className="whitespace-nowrap overflow-hidden text-ellipsis">
-                          {regionNameList.of(stat.code.toUpperCase())}
+                          {getCountryName(stat.code)}
                         </p>
                       </div>
                       <p>{stat.average}</p>
@@ -296,8 +297,11 @@ export function Product() {
                     <p className="cursor-pointer">positive</p>
                     <p className="cursor-pointer">negative</p>
                   </div>
-                  <p className="hover:underline cursor-pointer">
-                    write a review
+                  <p
+                    className="hover:underline cursor-pointer"
+                    onClick={() => setAction(Action.Reviewing)}
+                  >
+                    write your review
                   </p>
                 </div>
               </div>
@@ -320,7 +324,7 @@ export function Product() {
                         <ReviewCard
                           key={index}
                           {...review}
-                          firstRow={index === 0}
+                          isFirstRow={index === 0}
                         />
                       ))}
                   </div>

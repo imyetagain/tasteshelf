@@ -1,3 +1,5 @@
+import { getCountryIcon } from '../../utils/country';
+
 interface Review {
   countryCode: string;
   date: Date;
@@ -14,7 +16,7 @@ export function ReviewCard({ countryCode, date, review, isFirstRow }: Review) {
     >
       <div className="flex items-center gap-1.5">
         <img
-          src={`https://hatscripts.github.io/circle-flags/flags/${countryCode.toLowerCase()}.svg`}
+          src={getCountryIcon(countryCode)}
           className="w-[18px] h-[18px]"
           alt={countryCode}
         />

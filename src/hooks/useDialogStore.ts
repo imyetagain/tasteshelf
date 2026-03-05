@@ -1,17 +1,8 @@
 import { create } from 'zustand';
 
-interface Dialog {
-  action: null | Action;
-  setAction: (action: Action | null) => void;
-}
-
-export enum Action {
-  Searching,
-  Listing,
-  Reviewing,
-}
+import { Action, Dialog } from '../types/dialogType';
 
 export const useDialog = create<Dialog>((set) => ({
   action: null,
-  setAction: (action) => set({ action }),
+  setAction: (action: Action | null) => set({ action }),
 }));

@@ -43,8 +43,7 @@
     line-height: 16px;
   }
 
-  input:focus,
-  textarea:focus {
+  input:focus {
     outline: none;
     box-shadow: none;
   }
@@ -72,5 +71,15 @@
   .footnote:hover {
     text-decoration: underline;
     text-decoration-line: underline;
+  }
+
+  .textarea {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .textarea:empty:before {
+    content: attr(data-placeholder);
+    color: #999;
   }
 }
